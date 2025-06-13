@@ -2,22 +2,22 @@
 Projet d’API haute performance en C# (.NET 8) pour collecter, stocker, exposer et monitorer l’ensemble des documents de la [Fondation SCP](http://scp-wiki.wikidot.com).
 
 ## 📌 Objectifs.
-- Scraper automatiquement les articles SCP, à intervalle régulier
+- Scraper automatiquement les articles SCP, à intervalle régulier.
 
-- Stocker efficacement les documents dans MongoDB ou PostgreSQL
+- Stocker efficacement les documents dans MongoDB.
 
-- Exposer une API REST sécurisée, filtrable et documentée via Swagger
+- Exposer une API REST sécurisée, filtrable et documentée via Swagger.
 
-- Fournir des métriques et visualisations sur le scraping (progression, erreurs, performance)
+- Fournir des métriques et visualisations sur le scraping (progression, erreurs, performance).
 
-- Fournir une base scalable, maintenable, conteneurisée, prête pour la production
+- Fournir une base scalable, maintenable, conteneurisée, prête pour la production.
 
 ## 🏗️ Architecture du projet.
 ```
 SCPApi/
 ├── SCPApi.WebApi/          # ASP.NET Core REST API (Swagger, Auth, Metrics)
 ├── SCPApi.Scheduler/       # Jobs Quartz.NET pour le scraping récurrent
-├── SCPApi.Data/            # Abstraction DB MongoDB / PostgreSQL
+├── SCPApi.Data/            # Abstraction DB MongoDB 
 ├── SCPApi.Scraper/         # Scraper HtmlAgilityPack + HttpClient
 ├── SCPApi.Tests/           # Tests unitaires (xUnit / NUnit)
 ├── docker-compose.yml      # Stack complète (API + DB + Prometheus + Grafana)
@@ -40,25 +40,25 @@ SCPApi/
 | **Tests**         | xUnit / NUnit                |
 
 ## 🔍 Fonctionnalités clés.
-- 📥 Scraper tous les articles SCP depuis le site officiel (contenu, ID, tags, metadata)
+- 📥 Scraper tous les articles SCP depuis le site officiel (contenu, ID, tags, metadata).
 
-- 📆 Mise à jour périodique des contenus via scheduler (Quartz.NET)
+- 📆 Mise à jour périodique des contenus via scheduler (Quartz.NET).
 
-- 🧾 Stockage structuré des données SCP dans MongoDB ou PostgreSQL
+- 🧾 Stockage structuré des données SCP dans MongoDB.
 
 - 🌐 API RESTful exposant :
 
-  - GET /scps — Liste paginée et filtrée des SCP
+  - GET /scps — Liste paginée et filtrée des SCP.
 
-  - GET /scps/{id} — Détail d’un SCP spécifique
+  - GET /scps/{id} — Détail d’un SCP spécifique.
 
-  - GET /search?q=xxx — Recherche plein texte
+  - GET /search?q=xxx — Recherche plein texte.
 
-- 🔐 Sécurité : Authentification JWT, Rate limiting, CORS, HTTPS
+- 🔐 Sécurité : Authentification JWT, Rate limiting, CORS, HTTPS.
 
 - 📊 Métriques Prometheus : pages scrapées, durée, erreurs, etc.
 
-- 📈 Dashboard Grafana : visualisation en temps réel de l’activité
+- 📈 Dashboard Grafana : visualisation en temps réel de l’activité.
 
 ## 🚀 Démarrage rapide.
 ```bash
