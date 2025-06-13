@@ -77,4 +77,4 @@ http://localhost:3000 (admin / admin)
 ```
 
 ## 📄 Licence.
-Projet open source sous licence MIT. Le contenu SCP est sous licence CC BY-SA 3.0.
+Projet open source sous licence MIT. Le contenu SCP est sous licence [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/).
