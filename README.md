@@ -1,16 +1,16 @@
 # 🧪 SCPArchiveAPI – Scraper & RESTful Service.
-Projet d’API haute performance en C# (.NET 8) pour collecter, stocker, exposer et monitorer l’ensemble des documents de la Fondation SCP (http://scp-wiki.wikidot.com).
+Projet d’API haute performance en C# (.NET 8) pour collecter, stocker, exposer et monitorer l’ensemble des documents de la [Fondation SCP](http://scp-wiki.wikidot.com).
 
 ## 📌 Objectifs.
--Scraper automatiquement les articles SCP, à intervalle régulier
+- Scraper automatiquement les articles SCP, à intervalle régulier
 
--Stocker efficacement les documents dans MongoDB ou PostgreSQL
+- Stocker efficacement les documents dans MongoDB ou PostgreSQL
 
--Exposer une API REST sécurisée, filtrable et documentée via Swagger
+- Exposer une API REST sécurisée, filtrable et documentée via Swagger
 
--Fournir des métriques et visualisations sur le scraping (progression, erreurs, performance)
+- Fournir des métriques et visualisations sur le scraping (progression, erreurs, performance)
 
--Fournir une base scalable, maintenable, conteneurisée, prête pour la production
+- Fournir une base scalable, maintenable, conteneurisée, prête pour la production
 
 ## 🏗️ Architecture du projet.
 ```
