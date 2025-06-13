@@ -26,3 +26,17 @@ SCPApi/
 ```
 
 ## ⚙️ Stack technique.
+| Composant         | Tech choisie                 |
+| ----------------- | ---------------------------- |
+| **Langage**       | C# (.NET 8)                  |
+| **API REST**      | ASP.NET Core + Swashbuckle   |
+| **Scraping**      | HtmlAgilityPack + HttpClient |
+| **Scheduler**     | Quartz.NET                   |
+| **DB**            | MongoDB (`MongoDB.Driver`)   |
+| **Metrics**       | Prometheus-net (`/metrics`)  |
+| **Logs**          | Serilog                      |
+| **Visualisation** | Grafana                      |
+| **Conteneurs**    | Docker / Docker Compose      |
+| **Tests**         | xUnit / NUnit                |
+
+## 🔍 Fonctionnalités clés.
