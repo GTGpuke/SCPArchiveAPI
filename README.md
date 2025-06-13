@@ -40,3 +40,24 @@ SCPApi/
 | **Tests**         | xUnit / NUnit                |
 
 ## 🔍 Fonctionnalités clés.
+- 📥 Scraper tous les articles SCP depuis le site officiel (contenu, ID, tags, metadata)
+
+- 📆 Mise à jour périodique des contenus via scheduler (Quartz.NET)
+
+- 🧾 Stockage structuré des données SCP dans MongoDB ou PostgreSQL
+
+- 🌐 API RESTful exposant :
+
+  - GET /scps — Liste paginée et filtrée des SCP
+
+  - GET /scps/{id} — Détail d’un SCP spécifique
+
+  - GET /search?q=xxx — Recherche plein texte
+
+- 🔐 Sécurité : Authentification JWT, Rate limiting, CORS, HTTPS
+
+- 📊 Métriques Prometheus : pages scrapées, durée, erreurs, etc.
+
+- 📈 Dashboard Grafana : visualisation en temps réel de l’activité
+
+## 🚀 Démarrage rapide.
