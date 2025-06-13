@@ -61,3 +61,20 @@ SCPApi/
 - 📈 Dashboard Grafana : visualisation en temps réel de l’activité
 
 ## 🚀 Démarrage rapide.
+```bash
+# 1. Cloner le repo
+git clone https://github.com/ton-compte/scp-api.git
+cd scp-api
+
+# 2. Lancer le projet complet avec Docker
+docker-compose up --build
+
+# 3. Accès à l'API
+http://localhost:5000/swagger
+
+# 4. Accès à Grafana
+http://localhost:3000 (admin / admin)
+```
+
+## 📄 Licence.
+Projet open source sous licence MIT. Le contenu SCP est sous licence CC BY-SA 3.0.
