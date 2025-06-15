@@ -70,18 +70,19 @@ SCPArchiveApi/
 ```
 
 ## ⚙️ Stack technique.
-| Composant         | Tech choisie                 |
-| ----------------- | ---------------------------- |
-| **Langage**       | C# (.NET 8)                  |
-| **API REST**      | ASP.NET Core + Swashbuckle   |
-| **Scraping**      | HtmlAgilityPack + HttpClient |
-| **Scheduler**     | Quartz.NET                   |
-| **DB**            | MongoDB (`MongoDB.Driver`)   |
-| **Metrics**       | Prometheus-net (`/metrics`)  |
-| **Logs**          | Serilog                      |
-| **Visualisation** | Grafana                      |
-| **Conteneurs**    | Docker / Docker Compose      |
-| **Tests**         | xUnit / NUnit                |
+| Composant            | Technologie choisie                  |
+| -------------------- | ------------------------------------ |
+| **Langage**          | C# (.NET 8)                          |
+| **API REST**         | ASP.NET Core + Swashbuckle (Swagger) |
+| **Scraping**         | HtmlAgilityPack + HttpClient         |
+| **Scheduler**        | Quartz.NET                           |
+| **Base de données**  | MongoDB (`MongoDB.Driver`)           |
+| **Métriques**        | Prometheus-net (`/metrics`)          |
+| **Logs**             | Serilog                              |
+| **Visualisation**    | Grafana                              |
+| **Conteneurisation** | Docker + Docker Compose              |
+| **Tests**            | xUnit / NUnit                        |
+
 
 ## 🔍 Fonctionnalités clés.
 - 📥 Scraper tous les articles SCP depuis le site officiel (contenu, ID, tags, metadata).
