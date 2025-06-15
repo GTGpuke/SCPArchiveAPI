@@ -17,7 +17,7 @@ Projet d’API haute performance en C# (.NET 8) pour collecter, stocker, exposer
 SCPArchiveApi/
 ├── src/
 │   └── SCPArchiveApi/
-│       ├── Controllers/               # Endpoints REST (avec versioning)
+│       ├── Controllers/              # Endpoints REST (avec versioning)
 │       ├── DTOs/                     # Objets de transfert (séparés des modèles DB)
 │       ├── Middleware/               # Middleware (auth, logs, exceptions, rate limiting)
 │       ├── Models/                   # Modèles de données (ScpEntry, Metadata)
@@ -29,8 +29,6 @@ SCPArchiveApi/
 │       ├── Startup.cs                # (Optionnel) Config avancée DI / middleware
 │       ├── SCPArchiveApi.csproj
 │       ├── appsettings.json          # Config générale (connexions, logs, etc.)
-│       ├── appsettings.Development.json
-│       ├── appsettings.Production.json
 │       └── openapi.yaml              # Schéma OpenAPI (extrait automatiquement)
 │
 ├── tests/
@@ -44,7 +42,7 @@ SCPArchiveApi/
 ├── .github/
 │   └── workflows/
 │       ├── ci.yml                    # Build, test, lint, coverage
-│       └── deploy.yml (optionnel)   # Déploiement auto (Docker Hub, Azure, etc.)
+│       └── deploy.yml (optionnel)    # Déploiement auto (Docker Hub, Azure, etc.)
 │
 ├── build/
 │   ├── Makefile                      # Commandes raccourcies (build, test, lint…)
@@ -60,7 +58,7 @@ SCPArchiveApi/
 │   └── deployment.md                 # Procédure d’hébergement (Docker, env)
 │
 ├── .dockerignore
-├── .env.example                      # Fichier d'exemple d’environnement (non commité)
+├── .env                              # Fichier de variable d’environnement (non commité)
 ├── .gitignore
 ├── CHANGELOG.md                      # Journal des changements (suivi sémantique)
 ├── Directory.Build.props             # Propriétés MSBuild partagées
