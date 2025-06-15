@@ -14,15 +14,27 @@ Projet d’API haute performance en C# (.NET 8) pour collecter, stocker, exposer
 
 ## 🏗️ Architecture du projet.
 ```
-SCPApi/
-├── SCPApi.WebApi/          # ASP.NET Core REST API (Swagger, Auth, Metrics)
-├── SCPApi.Scheduler/       # Jobs Quartz.NET pour le scraping récurrent
-├── SCPApi.Data/            # Abstraction DB MongoDB 
-├── SCPApi.Scraper/         # Scraper HtmlAgilityPack + HttpClient
-├── SCPApi.Tests/           # Tests unitaires (xUnit / NUnit)
-├── docker-compose.yml      # Stack complète (API + DB + Prometheus + Grafana)
-├── Dockerfile              # Build de l’API
-└── README.md
+SCPArchiveApi/
+├── src/                          # Code source principal
+│   └── SCPArchiveApi/           # Projet Web API (namespace = SCPArchiveApi)
+│       ├── Controllers/
+│       ├── Models/
+│       ├── Services/
+│       ├── Repositories/
+│       ├── Scraper/
+│       ├── Program.cs
+│       └── SCPArchiveApi.csproj
+│
+├── tests/                        # Tests unitaires & d'intégration
+│   └── SCPArchiveApi.Tests/
+│       └── SCPArchiveApi.Tests.csproj
+│
+├── docker-compose.yml
+├── .dockerignore
+├── .gitignore
+├── README.md
+├── LICENSE
+└── Directory.Build.props         # (Optionnel : props globaux pour tous les projets)
 ```
 
 ## ⚙️ Stack technique.
