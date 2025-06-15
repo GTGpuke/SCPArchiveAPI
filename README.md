@@ -16,33 +16,57 @@ Projet d’API haute performance en C# (.NET 8) pour collecter, stocker, exposer
 ```
 SCPArchiveApi/
 ├── src/
-│   └── SCPArchiveApi/                 # Code principal de l’API
-│       ├── Controllers/               # Endpoints REST
-│       ├── Models/                    # Modèles de données (ScpEntry, Metadata)
-│       ├── Services/                  # Scraping, business logic
+│   └── SCPArchiveApi/
+│       ├── Controllers/               # Endpoints REST (avec versioning)
+│       ├── DTOs/                     # Objets de transfert (séparés des modèles DB)
+│       ├── Middleware/               # Middleware (auth, logs, exceptions, rate limiting)
+│       ├── Models/                   # Modèles de données (ScpEntry, Metadata)
 │       ├── Repositories/             # Accès base de données (Mongo/PostgreSQL)
 │       ├── Scraper/                  # Scraper SCP Wiki (html, jobs)
-│       ├── Program.cs                # Entry point + configuration
-│       ├── Startup.cs (optionnel)    # Configuration avancée DI / middleware
-│       ├── appsettings.json          # Config générale (connexions, logs)
-│       ├── Dockerfile                # Image Docker de l’API
-│       └── SCPArchiveApi.csproj
+│       ├── Services/                 # Business logic (scraping, recherche…)
+│       ├── Validators/               # FluentValidation / DataAnnotations personnalisés
+│       ├── Program.cs                # Entry point .NET 6/7/8
+│       ├── Startup.cs                # (Optionnel) Config avancée DI / middleware
+│       ├── SCPArchiveApi.csproj
+│       ├── appsettings.json          # Config générale (connexions, logs, etc.)
+│       ├── appsettings.Development.json
+│       ├── appsettings.Production.json
+│       └── openapi.yaml              # Schéma OpenAPI (extrait automatiquement)
 │
 ├── tests/
-│   └── SCPArchiveApi.Tests/          # Projet de tests (XUnit, NUnit…)
-│       ├── Unit/                     # Tests unitaires (services, logique)
-│       ├── Integration/              # Tests d’intégration (API, DB)
-│       └── SCPArchiveApi.Tests.csproj
+│   └── SCPArchiveApi.Tests/
+│       ├── Unit/                     # Tests unitaires (services, logique, validateurs)
+│       ├── Integration/              # Tests d’intégration (API, DB, scrapers)
+│       ├── E2E/                      # Tests de bout-en-bout (HttpClient, Postman/newman)
+│       ├── SCPArchiveApi.Tests.csproj
+│       └── testsettings.json         # Configuration de test
 │
-├── .github/                           # CI pour GitHub
+├── .github/
 │   └── workflows/
-│       └── ci.yml                     # Pipeline CI/CD GitHub Actions
-├── .gitignore                         # Fichiers à exclure du repo
-├── .dockerignore                      # Fichiers à exclure des builds Docker
-├── docker-compose.yml                 # Multi-services : API + MongoDB + Prometheus
-├── LICENSE                            # (Optionnel) Licence libre
-├── README.md                          # Documentation du projet
-├── Directory.Build.props              # (Optionnel) Props globaux pour tout le projet
+│       ├── ci.yml                    # Build, test, lint, coverage
+│       └── deploy.yml (optionnel)   # Déploiement auto (Docker Hub, Azure, etc.)
+│
+├── build/
+│   ├── Makefile                      # Commandes raccourcies (build, test, lint…)
+│   ├── build.ps1                     # Version PowerShell du Makefile
+│   └── docker-entrypoint.sh          # Entrée personnalisée Docker
+│
+├── docs/                             # Documentation technique
+│   ├── architecture.md               # Diagrammes / description du projet
+│   ├── api.md                        # Explication des endpoints, pagination, filtres
+│   ├── scraping.md                   # Stratégie de scraping & fréquence
+│   ├── database-schema.md            # Modèle des collections / tables
+│   ├── prometheus.md                 # Endpoints metrics, format, dashboard
+│   └── deployment.md                 # Procédure d’hébergement (Docker, env)
+│
+├── .dockerignore
+├── .env.example                      # Fichier d'exemple d’environnement (non commité)
+├── .gitignore
+├── CHANGELOG.md                      # Journal des changements (suivi sémantique)
+├── Directory.Build.props             # Propriétés MSBuild partagées
+├── docker-compose.yml                # API + Mongo + Prometheus + Grafana + DB tool
+├── LICENSE                           # Licence libre (MIT, GPL…)
+├── README.md                         # Présentation + installation + API rapide
 ```
 
 ## ⚙️ Stack technique.
