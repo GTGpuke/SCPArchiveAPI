@@ -15,26 +15,34 @@ Projet d’API haute performance en C# (.NET 8) pour collecter, stocker, exposer
 ## 🏗️ Architecture du projet.
 ```
 SCPArchiveApi/
-├── src/                          # Code source principal
-│   └── SCPArchiveApi/           # Projet Web API (namespace = SCPArchiveApi)
-│       ├── Controllers/
-│       ├── Models/
-│       ├── Services/
-│       ├── Repositories/
-│       ├── Scraper/
-│       ├── Program.cs
+├── src/
+│   └── SCPArchiveApi/                 # Code principal de l’API
+│       ├── Controllers/               # Endpoints REST
+│       ├── Models/                    # Modèles de données (ScpEntry, Metadata)
+│       ├── Services/                  # Scraping, business logic
+│       ├── Repositories/             # Accès base de données (Mongo/PostgreSQL)
+│       ├── Scraper/                  # Scraper SCP Wiki (html, jobs)
+│       ├── Program.cs                # Entry point + configuration
+│       ├── Startup.cs (optionnel)    # Configuration avancée DI / middleware
+│       ├── appsettings.json          # Config générale (connexions, logs)
+│       ├── Dockerfile                # Image Docker de l’API
 │       └── SCPArchiveApi.csproj
 │
-├── tests/                        # Tests unitaires & d'intégration
-│   └── SCPArchiveApi.Tests/
+├── tests/
+│   └── SCPArchiveApi.Tests/          # Projet de tests (XUnit, NUnit…)
+│       ├── Unit/                     # Tests unitaires (services, logique)
+│       ├── Integration/              # Tests d’intégration (API, DB)
 │       └── SCPArchiveApi.Tests.csproj
 │
-├── docker-compose.yml
-├── .dockerignore
-├── .gitignore
-├── README.md
-├── LICENSE
-└── Directory.Build.props         # (Optionnel : props globaux pour tous les projets)
+├── .github/                           # CI pour GitHub
+│   └── workflows/
+│       └── ci.yml                     # Pipeline CI/CD GitHub Actions
+├── .gitignore                         # Fichiers à exclure du repo
+├── .dockerignore                      # Fichiers à exclure des builds Docker
+├── docker-compose.yml                 # Multi-services : API + MongoDB + Prometheus
+├── LICENSE                            # (Optionnel) Licence libre
+├── README.md                          # Documentation du projet
+├── Directory.Build.props              # (Optionnel) Props globaux pour tout le projet
 ```
 
 ## ⚙️ Stack technique.
