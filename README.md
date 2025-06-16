@@ -64,8 +64,8 @@ SCPArchiveApi/
 ├── CHANGELOG.md                      # Journal des changements (suivi sémantique)
 ├── Directory.Build.props             # Propriétés MSBuild partagées
 ├── docker-compose.yml                # API + Mongo + Prometheus + Grafana + DB tool
-├── LICENSE                           # Licence libre (MIT, GPL…)
 ├── Dockerfile                        # Fichier de configuration de l'image docker
+├── LICENSE                           # Licence libre (MIT, GPL…)
 ├── README.md                         # Présentation + installation + API rapide
 ```
 
