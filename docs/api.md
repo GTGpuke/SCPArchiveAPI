@@ -1,56 +1,118 @@
 # Documentation de l'API
 
-## Points d'accès REST
+## Versioning
+- Toutes les routes sont préfixées par `/api/v{version}/` (ex: `/api/v1/scps`)
+- Version par défaut : **v1**
 
-### Objets SCP
+## Authentification
+- Par défaut, l'API est publique en lecture.
+- Les endpoints sensibles (scraping, admin) nécessitent une API Key (header `X-API-KEY`).
 
-#### GET /api/v1/scps
-Récupère une liste paginée d'objets SCP.
+---
 
-**Paramètres de requête**
-- `page` (défaut: 1) - Numéro de page
-- `limit` (défaut: 20, max: 100) - Nombre d'éléments par page
-- `objectClass` - Filtre par classe (Safe, Euclid, Keter)
-- `search` - Recherche textuelle
-- `sort` - Tri (rating, date, views)
+## 🚦 Endpoints principaux
 
-#### GET /api/v1/scps/{id}
-Récupère un objet SCP spécifique par son ID.
+### 1. Récupération d'un article SCP
+`GET /api/v1/scps/{itemNumber}`
 
-#### POST /api/v1/scps/scrape
-Déclenche un scraping manuel (authentification admin requise).
+| Paramètre    | Type   | Description                  |
+|--------------|--------|------------------------------|
+| itemNumber   | string | Numéro SCP (ex: SCP-173)     |
 
-### Métriques et Santé
-
-#### GET /health
-Vérifie l'état de l'API et ses dépendances.
-
-#### GET /metrics
-Endpoints Prometheus pour le monitoring.
-
-## Pagination
-
-La pagination utilise les headers HTTP standards:
+**Réponse :**
+```json
+{
+  "itemNumber": "SCP-173",
+  "title": "La Statue",
+  "objectClass": "Euclid",
+  "content": {
+    "description": "...",
+    "containment": "...",
+    "addenda": [ { "title": "Addendum 1", "content": "..." } ]
+  },
+  "tags": ["statue", "dangerous"],
+  "metadata": {
+    "author": "Dr. Gears",
+    "creationDate": "2010-01-01T00:00:00Z",
+    "lastModified": "2024-06-01T12:00:00Z",
+    "rating": 1234
+  },
+  "scraping": {
+    "lastScraped": "2025-06-16T10:00:00Z",
+    "sourceUrl": "http://www.scp-wiki.net/scp-173"
+  }
+}
 ```
-Link: <https://api.../scps?page=2>; rel="next",
-      <https://api.../scps?page=10>; rel="last"
-X-Total-Count: 100
+
+| Code | Signification |
+|------|--------------|
+| 200  | OK           |
+| 404  | Non trouvé   |
+
+---
+
+### 2. Recherche d'articles SCP
+`GET /api/v1/scps`
+
+| Paramètre    | Type   | Description                                 |
+|--------------|--------|---------------------------------------------|
+| query        | string | Texte à rechercher (full-text)              |
+| objectClass  | string | Filtre (Safe, Euclid, Keter...)             |
+| tags         | string | Filtre par tags (séparés par virgule)       |
+| sort         | string | Champ de tri (`rating`, `date`, `views`)    |
+| page         | int    | Numéro de page (défaut 1)                   |
+| pageSize     | int    | Taille de page (défaut 20, max 100)         |
+
+**Réponse :**
+```json
+{
+  "items": [ ... ],
+  "total": 1234,
+  "query": { ... }
+}
 ```
 
-## Rate Limiting
+| Header             | Description                        |
+|--------------------|------------------------------------|
+| X-Total-Count      | Nombre total de résultats           |
+| Link               | Pagination (RFC 5988)              |
 
-- 100 requêtes/minute pour les clients non authentifiés
-- 1000 requêtes/minute pour les clients authentifiés
-- Headers de réponse:
-  ```
-  X-RateLimit-Limit: 100
-  X-RateLimit-Remaining: 95
-  X-RateLimit-Reset: 1623456789
-  ```
+---
 
-## Gestion des erreurs
+### 3. Déclencher le scraping manuel
+`POST /api/v1/scps/{itemNumber}/scrape`
 
-Format JSON standard pour les erreurs :
+- Lance le scraping d'un article spécifique (admin)
+- Header : `X-API-KEY: ...`
+- Réponse : **202 Accepted**
+
+---
+
+### 4. Endpoint santé
+`GET /health`
+
+**Réponse :**
+```json
+{
+  "status": "Healthy",
+  "checks": {
+    "mongodb": "Healthy",
+    "scraper": "Healthy"
+  }
+}
+```
+
+---
+
+### 5. Endpoint Prometheus
+`GET /metrics`
+- Expose les métriques Prometheus (latence, erreurs, scraping, DB)
+
+---
+
+## ⚠️ Gestion des erreurs
+
+Toutes les erreurs sont retournées au format JSON :
 ```json
 {
   "error": {
@@ -59,3 +121,61 @@ Format JSON standard pour les erreurs :
     "details": { ... }
   }
 }
+```
+
+| Code | Signification         |
+|------|----------------------|
+| 400  | Erreur de validation |
+| 401  | Non authentifié      |
+| 403  | Non autorisé         |
+| 404  | Non trouvé           |
+| 429  | Trop de requêtes     |
+| 500  | Erreur serveur       |
+
+---
+
+## 📄 Pagination & tri
+- Pagination via `page` et `pageSize`
+- Tri via `sort` (ex: `rating`, `date`)
+- Headers HTTP :
+  - `X-Total-Count` : total des résultats
+  - `Link` : liens de pagination (next, prev, last, first)
+
+---
+
+## 🚦 Rate limiting
+- 100 requêtes/minute par IP (non authentifié)
+- 1000 requêtes/minute par API Key
+- Headers :
+  - `X-RateLimit-Limit`
+  - `X-RateLimit-Remaining`
+  - `X-RateLimit-Reset`
+
+---
+
+## 🧭 Conventions REST
+- Utilisation des verbes HTTP standards (GET, POST, PUT, DELETE)
+- Statuts HTTP explicites
+- Documentation Swagger disponible sur `/swagger`
+
+---
+
+## 💡 Exemples de requêtes
+
+```http
+GET /api/v1/scps?query=statue&objectClass=Euclid&page=2&pageSize=10
+```
+
+```http
+POST /api/v1/scps/SCP-173/scrape
+X-API-KEY: votrecletest
+```
+
+---
+
+## 📚 Pour aller plus loin
+- [Schéma de la base](database-schema.md)
+- [Architecture](architecture.md)
+- [Stratégie de scraping](scraping.md)
+- [Monitoring & métriques](prometheus.md)
+- [Déploiement](deployment.md)

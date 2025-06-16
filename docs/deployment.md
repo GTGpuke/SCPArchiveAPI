@@ -1,75 +1,101 @@
-# Guide de Déploiement
+# 🚀 Guide de Déploiement détaillé
 
-## Prérequis
-
+## 🧰 Prérequis
 - Docker & Docker Compose
-- MongoDB 6.0+
-- .NET 8 SDK (développement)
-- 2GB RAM minimum
-- 10GB espace disque
+- MongoDB 6.0+ (inclus dans le docker-compose)
+- .NET 8 SDK (pour développement local)
+- 2GB RAM minimum, 10GB espace disque
 
-## Configuration
+---
 
-### Variables d'environnement
+## ⚙️ Configuration des variables d'environnement
+- `.env` : centralise les variables sensibles (URI MongoDB, API Key, etc.)
+- `appsettings.json` : configuration par défaut (scraping, logs, etc.)
+
+| Variable              | Description                        | Exemple                        |
+|-----------------------|------------------------------------|--------------------------------|
+| `MONGO_URI`           | URI de connexion MongoDB           | `mongodb://mongodb:27017`      |
+| `MONGO_DB`            | Nom de la base MongoDB             | `scparchive`                   |
+| `ASPNETCORE_ENVIRONMENT` | Environnement .NET               | `Production`                   |
+| `API_KEY`             | Clé API admin                      | `your-secret-key`              |
+| `RATE_LIMIT`          | Limite de requêtes/minute          | `100`                          |
+| `PROMETHEUS_PORT`     | Port Prometheus                    | `9090`                         |
+| `GRAFANA_PORT`        | Port Grafana                       | `3000`                         |
+
+---
+
+## 🐳 Déploiement Docker Compose
+- `docker-compose.yml` orchestre :
+  - API SCPArchive
+  - MongoDB (persistance volume)
+  - Prometheus (monitoring)
+  - Grafana (dashboard)
+
+### Commandes principales
 ```bash
-# MongoDB
-MONGO_URI=mongodb://mongodb:27017
-MONGO_DB=scparchive
-
-# API
-ASPNETCORE_ENVIRONMENT=Production
-API_KEY=your-secret-key
-RATE_LIMIT=100
-
-# Monitoring
-PROMETHEUS_PORT=9090
-GRAFANA_PORT=3000
-```
-
-## Déploiement Docker
-
-### Production
-```bash
-# Build et démarrage
-docker-compose -f docker-compose.prod.yml up -d
-
-# Vérification des logs
+# Build et lancement
+docker-compose up -d --build
+# Logs API
 docker-compose logs -f api
-
 # Arrêt
 docker-compose down
 ```
 
-### Scaling
+---
+
+## 📈 Scaling & haute disponibilité
+- **API** : scalable horizontalement (`docker-compose up -d --scale api=3`)
+- **MongoDB** : support du replica set (voir documentation MongoDB)
+- **Load balancer** : possible via Nginx ou Traefik
+
+---
+
+## 💾 Sauvegarde & restauration
+- **MongoDB** :
 ```bash
-# Scaling horizontal
-docker-compose up -d --scale api=3
-
-# Avec un load balancer (nginx)
-docker-compose -f docker-compose.prod.yml -f docker-compose.lb.yml up -d
-```
-
-## Sauvegarde
-
-### MongoDB
-```bash
-# Backup
+# Sauvegarde
 docker-compose exec mongodb mongodump --out /backup
-
-# Restore
+# Restauration
 docker-compose exec mongodb mongorestore /backup
 ```
+- **Volumes Docker** : à sauvegarder régulièrement
 
-## Monitoring
+---
 
-- Prometheus: http://localhost:9090
-- Grafana: http://localhost:3000
-- API Metrics: http://localhost:5000/metrics
+## 🔒 Sécurité
+- API Key obligatoire pour les endpoints sensibles
+- Limitation du nombre de requêtes (rate limiting)
+- Mise à jour régulière des images Docker
+- Scan de vulnérabilités (Trivy, Snyk...)
+- Configuration HTTPS recommandée (reverse proxy)
 
-## Sécurité
+---
 
-1. Mise à jour régulière des conteneurs
-2. Scan de vulnérabilités
-3. Configuration HTTPS
-4. Rate limiting
-5. Authentification API
+## 🕵️‍♂️ Supervision & logs
+- **Prometheus** : http://localhost:9090
+- **Grafana** : http://localhost:3000 (admin/admin)
+- **API Metrics** : http://localhost:5000/metrics
+- **Logs** : accessibles via `docker-compose logs`
+
+---
+
+## 🔄 CI/CD
+- **GitHub Actions** : build, test, lint, coverage, push image Docker
+- **Déploiement automatique** : possible sur Azure, AWS, GCP, OVH, etc.
+- **Secrets** : stockés dans GitHub Secrets ou Azure Key Vault
+
+---
+
+## 🏅 Bonnes pratiques
+- Utiliser des tags d'image Docker versionnés
+- Séparer les environnements (dev, staging, prod)
+- Monitorer l'espace disque MongoDB
+- Mettre à jour régulièrement les dépendances
+- Documenter les procédures de rollback
+
+---
+
+## 📚 Pour aller plus loin
+- [Architecture](architecture.md)
+- [Monitoring & métriques](prometheus.md)
+- [Stratégie de scraping](scraping.md)
