@@ -1,0 +1,7 @@
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Fichiers Docker
+.docker/
+.dockerignore
