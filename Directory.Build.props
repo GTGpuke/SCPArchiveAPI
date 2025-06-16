@@ -1,4 +1,3 @@
-# Base properties for all projects in the solution
 <Project>
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
