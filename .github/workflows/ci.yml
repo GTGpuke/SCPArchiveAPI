@@ -19,16 +19,16 @@ jobs:
         dotnet-version: '8.0.x'
         
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore src/SCPArchiveApi/SCPArchiveApi.csproj
       
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build src/SCPArchiveApi/SCPArchiveApi.csproj --no-restore
       
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test src/SCPArchiveApi/SCPArchiveApi.csproj --no-build --verbosity normal
       
     - name: Generate coverage report
-      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+      run: dotnet test src/SCPArchiveApi/SCPArchiveApi.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
       
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
