@@ -25,7 +25,7 @@ SCPArchiveApi/
 │       ├── Scraper/                  # Scraper SCP Wiki (html, jobs)
 │       ├── Services/                 # Business logic (scraping, recherche…)
 │       ├── Validators/               # FluentValidation / DataAnnotations personnalisés
-│       ├── Program.cs                # Entry point .NET 6/7/8
+│       ├── Program.cs                # Entry point .NET 8
 │       ├── Startup.cs                # (Optionnel) Config avancée DI / middleware
 │       ├── SCPArchiveApi.csproj
 │       ├── appsettings.json          # Config générale (connexions, logs, etc.)
@@ -35,6 +35,7 @@ SCPArchiveApi/
 │   └── SCPArchiveApi.Tests/
 │       ├── Unit/                     # Tests unitaires (services, logique, validateurs)
 │       ├── Integration/              # Tests d’intégration (API, DB, scrapers)
+│       ├── Performance/              # Tests de performance (API, DB, scrapers)
 │       ├── E2E/                      # Tests de bout-en-bout (HttpClient, Postman/newman)
 │       ├── SCPArchiveApi.Tests.csproj
 │       └── testsettings.json         # Configuration de test
@@ -59,11 +60,12 @@ SCPArchiveApi/
 │
 ├── .dockerignore
 ├── .env                              # Fichier de variable d’environnement (non commité)
-├── .gitignore
+├── .gitignore                        # Fichier détaillant les fichiers à ne pas commit.
 ├── CHANGELOG.md                      # Journal des changements (suivi sémantique)
 ├── Directory.Build.props             # Propriétés MSBuild partagées
 ├── docker-compose.yml                # API + Mongo + Prometheus + Grafana + DB tool
 ├── LICENSE                           # Licence libre (MIT, GPL…)
+├── Dockerfile                        # Fichier de configuration de l'image docker
 ├── README.md                         # Présentation + installation + API rapide
 ```
 
