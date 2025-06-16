@@ -15,7 +15,7 @@ public interface IScpRepository
     /// <summary>
     /// Récupère tous les SCPs avec pagination
     /// </summary>
-    Task<(IEnumerable<ScpEntry> Items, int Total)> GetAllAsync(int page, int pageSize);
+    Task<(IEnumerable<ScpEntry> Items, int Total)> GetAllAsync(int skip, int take);
 
     /// <summary>
     /// Ajoute ou met à jour un SCP
@@ -25,5 +25,9 @@ public interface IScpRepository
     /// <summary>
     /// Recherche des SCPs par critères
     /// </summary>
-    Task<IEnumerable<ScpEntry>> SearchAsync(string query, string? objectClass = null);
+    Task<IEnumerable<ScpEntry>> SearchAsync(
+        string query, 
+        string? objectClass = null,
+        int skip = 0,
+        int take = 20);
 }

@@ -3,9 +3,6 @@ using SCPArchiveApi.Repositories;
 
 namespace SCPArchiveApi.Services;
 
-/// <summary>
-/// Service de recherche dans les articles SCP
-/// </summary>
 public class SearchService : ISearchService
 {
     private readonly IScpRepository _repository;
@@ -21,7 +18,13 @@ public class SearchService : ISearchService
     {
         try
         {
-            var results = await _repository.SearchAsync(query.Text, query.ObjectClass);
+            var results = await _repository.SearchAsync(
+                query.Text,
+                query.ObjectClass,
+                skip: (query.Page - 1) * query.PageSize,
+                take: query.PageSize
+            );
+
             return new SearchResult
             {
                 Items = results,
@@ -31,14 +34,19 @@ public class SearchService : ISearchService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Erreur lors de la recherche avec la requête {Query}", query.Text);
+            _logger.LogError(ex, "Erreur de recherche: {Query}", query.Text);
             throw;
         }
     }
 
-    public async Task<IEnumerable<string>> GetSuggestionsAsync(string partialQuery)
+    public Task<IEnumerable<string>> GetSuggestionsAsync(string partialQuery)
     {
-        // TODO: Implémenter les suggestions
-        return Array.Empty<string>();
+        if (string.IsNullOrWhiteSpace(partialQuery))
+            return Task.FromResult<IEnumerable<string>>(Array.Empty<string>());
+
+        return Task.FromResult<IEnumerable<string>>(new[] {
+            $"SCP-{partialQuery}",
+            $"Class {partialQuery}"
+        });
     }
 }

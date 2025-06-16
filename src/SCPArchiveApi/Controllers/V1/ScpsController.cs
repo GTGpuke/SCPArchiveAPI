@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SCPArchiveApi.DTOs;
 using SCPArchiveApi.Services;
 using SCPArchiveApi.Repositories;
+using SCPArchiveApi.Models;
 
 namespace SCPArchiveApi.Controllers.V1;
 
@@ -45,13 +46,7 @@ public class ScpsController : ControllerBase
     public async Task<ActionResult<ScpEntryDetailedDto>> GetByNumber(string itemNumber)
     {
         var scp = await _repository.GetByNumberAsync(itemNumber);
-        if (scp == null)
-        {
-            return NotFound();
-        }
-
-        // TODO: Ajouter le mapping vers DTO (ex: via AutoMapper)
-        return Ok(scp);
+        return scp == null ? NotFound() : Ok(scp);
     }
 
     /// <summary>
@@ -65,21 +60,19 @@ public class ScpsController : ControllerBase
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<ScpEntryDetailedDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<ScpEntryDetailedDto>>> Search(
-        [FromQuery] string? query,
-        [FromQuery] string? objectClass,
+        [FromQuery] string? query = null,
+        [FromQuery] string? objectClass = null,
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 20)
     {
-        var searchQuery = new SearchQuery
+        var result = await _searchService.SearchAsync(new SearchQuery
         {
             Text = query ?? string.Empty,
             ObjectClass = objectClass,
             Page = page,
             PageSize = Math.Min(pageSize, 100)
-        };
-
-        var result = await _searchService.SearchAsync(searchQuery);
-        // TODO: Ajouter le mapping vers DTO
+        });
+        
         return Ok(result);
     }
 
@@ -90,18 +83,18 @@ public class ScpsController : ControllerBase
     /// <returns>202 Accepted si le scraping démarre</returns>
     [HttpPost("{itemNumber}/scrape")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
-    public async Task<IActionResult> Scrape(string itemNumber)
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public IActionResult Scrape(string itemNumber)
     {
         try
         {
-            // Lance le scraping de manière asynchrone (fire & forget)
             _ = _scrapingService.ScrapeEntryAsync(itemNumber);
             return Accepted();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Erreur lors du démarrage du scraping pour {ItemNumber}", itemNumber);
-            return StatusCode(500, "Une erreur est survenue lors du démarrage du scraping");
+            _logger.LogError(ex, "Erreur lors du scraping de {ItemNumber}", itemNumber);
+            return StatusCode(500, "Erreur lors du scraping");
         }
     }
 }

@@ -5,9 +5,6 @@ using SCPArchiveApi.Repositories;
 
 namespace SCPArchiveApi.Services;
 
-/// <summary>
-/// Service de scraping des articles SCP
-/// </summary>
 public class ScrapingService : IScrapingService
 {
     private readonly IScpRepository _repository;
@@ -25,8 +22,6 @@ public class ScrapingService : IScrapingService
         _httpClient = httpClient;
         _logger = logger;
         _options = options.Value;
-
-        // Configuration du User-Agent
         _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(_options.UserAgent);
     }
 
@@ -36,10 +31,8 @@ public class ScrapingService : IScrapingService
         {
             var url = $"{_options.BaseUrl}/{itemNumber}";
             var doc = await LoadDocumentAsync(url);
-
             var entry = await ParseScpEntry(doc, itemNumber);
             await _repository.UpsertAsync(entry);
-
             _logger.LogInformation("Article {ItemNumber} scrapé avec succès", itemNumber);
         }
         catch (Exception ex)
@@ -49,34 +42,29 @@ public class ScrapingService : IScrapingService
         }
     }
 
-    public async Task ScrapeAllAsync(CancellationToken cancellationToken)
+    public Task ScrapeAllAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Démarrage du scraping complet");
-        // TODO: Implémenter le scraping complet
-        throw new NotImplementedException();
+        throw new NotImplementedException("Le scraping complet n'est pas encore implémenté");
     }
 
-    public async Task CheckUpdatesAsync(CancellationToken cancellationToken)
+    public Task CheckUpdatesAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Vérification des mises à jour");
-        // TODO: Implémenter la vérification des mises à jour
-        throw new NotImplementedException();
+        throw new NotImplementedException("La vérification des mises à jour n'est pas encore implémentée");
     }
 
     private async Task<HtmlDocument> LoadDocumentAsync(string url)
     {
-        // Respect du délai entre les requêtes
         await Task.Delay(_options.DelayBetweenRequests);
-
         var response = await _httpClient.GetStringAsync(url);
         var doc = new HtmlDocument();
         doc.LoadHtml(response);
         return doc;
     }
 
-    private async Task<ScpEntry> ParseScpEntry(HtmlDocument doc, string itemNumber)
+    private Task<ScpEntry> ParseScpEntry(HtmlDocument doc, string itemNumber)
     {
-        // TODO: Implémenter le parsing HTML
-        throw new NotImplementedException();
+        throw new NotImplementedException("Le parsing HTML n'est pas encore implémenté");
     }
 }

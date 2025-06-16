@@ -14,7 +14,7 @@ public class ScpHtmlParser
     /// <summary>
     /// Parse le HTML d'un article SCP et retourne un objet ScpEntry complet
     /// </summary>
-    public async Task<ScpEntry> ParseArticleAsync(string html, string itemNumber)
+    public ScpEntry ParseArticleAsync(string html, string itemNumber)
     {
         var doc = new HtmlDocument();
         doc.LoadHtml(html);

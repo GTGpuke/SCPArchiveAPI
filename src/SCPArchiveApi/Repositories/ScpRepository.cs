@@ -13,32 +13,54 @@ public class ScpRepository : IScpRepository
     public ScpRepository(IMongoDatabase database)
     {
         _collection = database.GetCollection<ScpEntry>("scps");
+        CreateIndexes();
+    }
+
+    private async void CreateIndexes()
+    {
+        var indexKeys = Builders<ScpEntry>.IndexKeys
+            .Text(x => x.Title)
+            .Text(x => x.Content);
+
+        await _collection.Indexes.CreateOneAsync(
+            new CreateIndexModel<ScpEntry>(indexKeys));
     }
 
     public async Task<ScpEntry?> GetByNumberAsync(string itemNumber)
     {
-        return await _collection.Find(x => x.ItemNumber == itemNumber).FirstOrDefaultAsync();
+        var result = await _collection.Find(x => x.ItemNumber == itemNumber)
+            .FirstOrDefaultAsync();
+        return result;
     }
 
-    public async Task<(IEnumerable<ScpEntry> Items, int Total)> GetAllAsync(int page, int pageSize)
+    public async Task<(IEnumerable<ScpEntry> Items, int Total)> GetAllAsync(int skip, int take)
     {
         var filter = Builders<ScpEntry>.Filter.Empty;
         var total = await _collection.CountDocumentsAsync(filter);
         var items = await _collection.Find(filter)
-            .Skip((page - 1) * pageSize)
-            .Limit(pageSize)
+            .Skip(skip)
+            .Limit(take)
             .ToListAsync();
 
         return (items, (int)total);
     }
 
-    public async Task UpsertAsync(ScpEntry entry)
+    public Task UpsertAsync(ScpEntry entry)
     {
-        var filter = Builders<ScpEntry>.Filter.Eq(x => x.ItemNumber, entry.ItemNumber);
-        await _collection.ReplaceOneAsync(filter, entry, new ReplaceOptions { IsUpsert = true });
+        var filter = Builders<ScpEntry>.Filter
+            .Eq(x => x.ItemNumber, entry.ItemNumber);
+
+        return _collection.ReplaceOneAsync(
+            filter,
+            entry,
+            new ReplaceOptions { IsUpsert = true });
     }
 
-    public async Task<IEnumerable<ScpEntry>> SearchAsync(string query, string? objectClass = null)
+    public Task<IEnumerable<ScpEntry>> SearchAsync(
+        string query,
+        string? objectClass = null,
+        int skip = 0,
+        int take = 20)
     {
         var builder = Builders<ScpEntry>.Filter;
         var filter = builder.Text(query);
@@ -48,9 +70,11 @@ public class ScpRepository : IScpRepository
             filter &= builder.Eq(x => x.ObjectClass, objectClass);
         }
 
-        return await _collection.Find(filter)
+        return _collection.Find(filter)
             .SortByDescending(x => x.Metadata.Rating)
-            .Limit(100)
-            .ToListAsync();
+            .Skip(skip)
+            .Limit(take)
+            .ToListAsync()
+            .ContinueWith(t => (IEnumerable<ScpEntry>)t.Result);
     }
 }
