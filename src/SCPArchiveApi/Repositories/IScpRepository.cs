@@ -30,4 +30,9 @@ public interface IScpRepository
         string? objectClass = null,
         int skip = 0,
         int take = 20);
+
+    /// <summary>
+    /// Teste la connexion à la base de données MongoDB
+    /// </summary>
+    Task TestConnectionAsync();
 }

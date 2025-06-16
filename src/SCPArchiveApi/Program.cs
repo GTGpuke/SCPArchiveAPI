@@ -23,14 +23,7 @@ try
     builder.Services.AddFluentValidationAutoValidation()
         .AddFluentValidationClientsideAdapters();
 
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "SCP Archive API", Version = "v1" }));
-
-    builder.Services.AddApiVersioning(opt => {
-        opt.DefaultApiVersion = new ApiVersion(1, 0);
-        opt.AssumeDefaultVersionWhenUnspecified = true;
-        opt.ReportApiVersions = true;
-    });
+    builder.Services.AddEndpointsApiExplorer();    builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "SCP Archive API", Version = "v1" }));
 
     builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection("MongoDB"));
     builder.Services.Configure<ScrapingOptions>(builder.Configuration.GetSection("Scraping"));

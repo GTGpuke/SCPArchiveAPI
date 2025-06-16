@@ -1,23 +1,18 @@
-// Contrôleur API versionné pour la gestion des articles SCP
-// Gère les endpoints REST pour la récupération, la recherche et le scraping des articles
-
 using Microsoft.AspNetCore.Mvc;
 using SCPArchiveApi.DTOs;
 using SCPArchiveApi.Services;
 using SCPArchiveApi.Repositories;
 using SCPArchiveApi.Models;
 
-namespace SCPArchiveApi.Controllers.V1;
+namespace SCPArchiveApi.Controllers;
 
 /// <summary>
-/// Contrôleur pour la gestion des articles SCP (version 1 de l'API)
+/// Contrôleur pour la gestion des articles SCP
 /// </summary>
 [ApiController]
-[ApiVersion("1.0")]
-[Route("api/v{version:apiVersion}/scps")]
+[Route("api/scps")]
 public class ScpsController : ControllerBase
 {
-    // Dépendances injectées : repository, services de scraping et de recherche, logger
     private readonly IScpRepository _repository;
     private readonly IScrapingService _scrapingService;
     private readonly ISearchService _searchService;
@@ -93,8 +88,7 @@ public class ScpsController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Erreur lors du scraping de {ItemNumber}", itemNumber);
-            return StatusCode(500, "Erreur lors du scraping");
+            _logger.LogError(ex, "Erreur lors du scraping de {ItemNumber}", itemNumber);            return StatusCode(500, "Erreur lors du scraping");
         }
     }
 }

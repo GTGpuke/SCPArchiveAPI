@@ -77,4 +77,11 @@ public class ScpRepository : IScpRepository
             .ToListAsync()
             .ContinueWith(t => (IEnumerable<ScpEntry>)t.Result);
     }
+
+    public async Task TestConnectionAsync()
+    {
+        // On exécute une commande ping pour vérifier la connexion
+        await _collection.Database.RunCommandAsync<MongoDB.Bson.BsonDocument>(
+            new MongoDB.Bson.BsonDocument("ping", 1));
+    }
 }
