@@ -1,3 +1,5 @@
+using SCPArchiveApi.Models;
+
 namespace SCPArchiveApi.Services;
 
 /// <summary>

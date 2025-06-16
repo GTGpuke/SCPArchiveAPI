@@ -4,6 +4,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SCPArchiveApi.DTOs;
 using SCPArchiveApi.Services;
+using SCPArchiveApi.Repositories;
 
 namespace SCPArchiveApi.Controllers.V1;
 
